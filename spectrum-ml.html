@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spectrum - ML</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #fff;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    letter-spacing: -0.5px;
+    color: #000;
+  }
+
+  header h1 span {
+    color: #c0392b;
+  }
+
+  #cards-row {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    max-width: 620px;
+    margin-bottom: 28px;
+  }
+
+  .card {
+    flex: 1;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 36px 20px 32px;
+    min-height: 280px;
+    gap: 10px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+    user-select: none;
+  }
+
+  .card:active { transform: scale(0.97); }
+
+  .card.left  { background: #c2185b; }
+  .card.right { background: #b71c1c; }
+
+  .card-arrow {
+    font-size: 28px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .card.left  .card-arrow { left: 14px; }
+  .card.right .card-arrow { right: 14px; }
+
+  .card-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.85);
+    line-height: 1;
+  }
+
+  .card-label {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: #fff;
+    text-align: center;
+    line-height: 1.35;
+    padding: 0 30px;
+  }
+
+  .card-chinese {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.65);
+    text-align: center;
+  }
+
+  #buttons {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 500;
+    padding: 11px 30px;
+    border-radius: 50px;
+    border: 1.5px solid #ccc;
+    background: #fff;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    letter-spacing: 0.01em;
+  }
+
+  .btn:hover { background: #f5f5f5; border-color: #aaa; }
+  .btn:active { transform: scale(0.96); }
+
+  .btn-next {
+    background: #b71c1c;
+    color: #fff;
+    border-color: #b71c1c;
+    padding: 12px 38px;
+    font-size: 1rem;
+  }
+
+  .btn-next:hover { background: #c0392b; border-color: #c0392b; }
+
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Spectrum &mdash; <span>ML</span></h1>
+</header>
+
+<div id="cards-row">
+  <div class="card left" id="card-left" onclick="goBack()">
+    <span class="card-arrow">&#8592;</span>
+    <div class="card-number">#0</div>
+    <div class="card-label" id="left-label">–</div>
+    <div class="card-chinese" id="left-chinese"></div>
+  </div>
+  <div class="card right" id="card-right" onclick="goNext()">
+    <span class="card-arrow">&#8594;</span>
+    <div class="card-number">#100</div>
+    <div class="card-label" id="right-label">–</div>
+    <div class="card-chinese" id="right-chinese"></div>
+  </div>
+</div>
+
+<div id="buttons">
+  <button class="btn btn-back" id="btn-back" onclick="goBack()">← Back</button>
+  <button class="btn btn-next" id="btn-next" onclick="goNext()">Next →</button>
+</div>
+
+<script>
+const cardsData = [
+  {left:"Good",right:"Bad"},{left:"Great sequel",right:"Poor sequel"},{left:"Rotten Tomato",right:"Fresh Tomato"},{left:"Highly addictive",right:"Mildly addictive"},{left:"Cold",right:"Hot"},{left:"Colorful",right:"Colorless"},{left:"High calorie",right:"Low calorie"},{left:"Feels good",right:"Feels bad"},{left:"Essential",right:"Inessential"},{left:"Expensive",right:"Cheap"},{left:"Overrated weapon",right:"Underrated weapon"},{left:"Hard subject",right:"Easy subject"},{left:"Famous",right:"Unknown"},{left:"Easy to use",right:"Difficult to use"},{left:"Strange",right:"Normal"},{left:"Stranger Things",right:"Normal Things"},{left:"Clean",right:"Dirty"},{left:"Requires skill",right:"Requires luck"},{left:"Flavorful",right:"Flavorless"},{left:"Fascinating topic",right:"Boring topic"},{left:"Good actors",right:"Bad actor"},{left:"Hipster",right:"Basic"},{left:"Safe job",right:"Dangerous job"},{left:"Sci-Fi",right:"Fantasy"},{left:"Formal",right:"Casual"},{left:"Overpaid",right:"Underpaid"},{left:"Wet",right:"Dry"},{left:"Overrated skill",right:"Underrated skill"},{left:"Encouraged",right:"Forbidden"},{left:"Happy song",right:"Sad song"},{left:"Durable",right:"Fragile"},{left:"Dork",right:"Geek"},{left:"Evil",right:"Good"},{left:"Best day of the year",right:"Worst day of the year"},{left:"Good habit",right:"Bad habit"},{left:"Dog person",right:"Cat person"},{left:"Openly love",right:"Guilty pleasure"},{left:"Talented",right:"Untalented"},{left:"Light",right:"Dark"},{left:"Overrated actor",right:"Underrated actor"},{left:"Easy to find",right:"Hard to find"},{left:"Beautiful man",right:"Ugly man"},{left:"Easy to remember",right:"Hard to remember"},{left:"Highbrow",right:"Lowbrow"},{left:"Healthy",right:"Unhealthy"},{left:"Good man",right:"Bad man"},{left:"Historically irrelevant",right:"Historically important"},{left:"Hairy",right:"Hairless"},{left:"Flexible",right:"Inflexible"},{left:"Exotic pet",right:"Common pet"},{left:"Good Pet",right:"Bad Pet"},{left:"Extrovert",right:"Introvert"},{left:"Movie was better",right:"Book was better"},{left:"Good movie",right:"Bad movie"},{left:"Beautiful",right:"Ugly"},{left:"Happens suddenly",right:"Happens slowly"},{left:"Career",right:"Job"},{left:"Hated",right:"Loved"},{left:"The Dark Side of the Force",right:"The Light Side of the Force"},{left:"Good pizza topping",right:"Bad pizza topping"},{left:"Utopia",right:"Dystopia"},{left:"Immature person",right:"Mature person"},{left:"Overrated thing to own",right:"Underrated thing to own"},{left:"Nice person",right:"Mean person"},{left:"Adventure movie",right:"Action movie"},{left:"Sexy",right:"Unsexy"},{left:"Wired",right:"Tired"},{left:"Abundant",right:"Scarce"},{left:"Common",right:"Ultra rare"},{left:"Skill-based",right:"Luck-based"},{left:"Believable",right:"Unbelievable"},{left:"Classy",right:"Trashy"},{left:"Permanent",right:"Temporary"},{left:"Doesn't look like a person",right:"Looks like a person"},{left:"Tastes good",right:"Tastes bad"},{left:"Game",right:"Sport"},{left:"Overrated Game",right:"Underrated Game"},{left:"Order of the Phoenix",right:"Death Eaters"},{left:"Jedi",right:"Sith"},{left:"Cool",right:"Uncool"},{left:"Greatest living person",right:"Worst living person"},{left:"Overrated",right:"Underrated"},{left:"Clean food",right:"Messy food"},{left:"Ethical",right:"Unethical"},{left:"Good gift",right:"Bad gift"},{left:"Fashionable",right:"Unfashionable"},{left:"Forgiveable",right:"Unforgiveable"},{left:"Harmful",right:"Harmless"},{left:"Hygienic",right:"Unhygienic"},{left:"Good music",right:"Bad music"},{left:"Useful",right:"Useless"},{left:"Art",right:"Science"},{left:"Important",right:"Unimportant"},{left:"Hard to spell",right:"Easy to spell"},{left:"Virtue",right:"Vice"},{left:"Overrated musician",right:"Underrated musician"},{left:"Popular activity",right:"Unpopular activity"},{left:"Whole",right:"Divided"},{left:"Reliable",right:"Unreliable"},{left:"Hard to kill",right:"Easy to kill"},{left:"Stable",right:"Unstable"},{left:"Pointy animal",right:"Round animal"},{left:"Good TV show",right:"Bad TV show"},{left:"Feminine",right:"Masculine"},{left:"Useful body part",right:"Useless body part"},{left:"Classic",right:"Fad"},{left:"Brilliant",right:"Stupid"},{left:"Strong",right:"Weak"},{left:"Useful invention",right:"Useless invention"},{left:"Conservative",right:"Liberal"},{left:"Popular",right:"Unpopular"},{left:"Enemy",right:"Friend"},{left:"Exciting",right:"Boring"},{left:"Smelly in a good way",right:"Smelly in a bad way"},{left:"Hero",right:"Villain"},{left:"Can't afford to lose",right:"Want to lose"},{left:"Necessary habit",right:"Unnecessary habit"},{left:"Impressive Hero",right:"Pathetic Hero"},{left:"Overrated thing to do",right:"Underrated thing to do"},{left:"Useful Tech",right:"Useless Tech"},{left:"Useful in an emergency",right:"Useless in an emergency"},{left:"For adults",right:"For kids"},{left:"Hard to do",right:"Easy to do"},{left:"Priceless",right:"Worthless"},{left:"Nurture",right:"Nature"},{left:"Democracy",right:"Dictatorship"},{left:"Cat name",right:"Dog name"},{left:"Partisan",right:"Non-partisan"},{left:"Infinite",right:"Limited"},{left:"Formal event",right:"Casual event"},{left:"Good investment",right:"Bad investment"},{left:"Heavy topic",right:"Small talk"},{left:"Spicy",right:"Mild"},{left:"Sacrilegious",right:"Religious"},{left:"Art",right:"Not art"},{left:"Prohibited",right:"Illegal"},{left:"Elitist",right:"Popular"},{left:"In control",right:"Out of control"},{left:"Loud",right:"Quiet"},{left:"Public knowledge",right:"Secret"},{left:"Too big",right:"Too small"},{left:"Long",right:"Short"},{left:"Best year in history",right:"Worst year in history"},{left:"Capitalist",right:"Socialist"},{left:"Well known fact",right:"Little known fact"},{left:"Mobile",right:"Stationary"},{left:"Global issue",right:"Local issue"},{left:"Skill",right:"Talent"},{left:"Best era to time travel",right:"Worst era to time travel"},{left:"The best",right:"The worst"},{left:"Large number",right:"Small number"},{left:"False",right:"True"},{left:"Avant garde",right:"Old fashioned"},{left:"Beautiful word",right:"Ugly word"},{left:"Tiny",right:"Small"},{left:"Natural",right:"Unnatural"},{left:"Phony",right:"Genuine"},{left:"Original",right:"Derivative"},{left:"Benefits everyone",right:"Benefits you"},{left:"Powerful",right:"Powerless"},{left:"Vegetable",right:"Fruit"},{left:"Pseudoscience",right:"Science"},{left:"Serious topic",right:"Funny topic"},{left:"Firm",right:"Limp"},{left:"News",right:"Gossip"},{left:"Easy to sit on",right:"Hard to sit on"},{left:"Too much",right:"Not enough"},{left:"Vertical",right:"Horizontal"},{left:"Scented",right:"Unscented"},{left:"Not huggable",right:"Huggable"},{left:"Homogenous",right:"Heterogeneous"},{left:"Exclusive",right:"Inclusive"},{left:"Good dog breed",right:"Bad dog breed"},{left:"Commerce",right:"Art"},{left:"Pop icon",right:"One hit wonder"},{left:"Good advice",right:"Bad advice"},{left:"Good candy",right:"Bad candy"},{left:"Radical",right:"Traditional"},{left:"Good mouthfeel",right:"Bad mouthfeel"},{left:"Legal",right:"Illegal"},{left:"Shallow",right:"Deep"},{left:"Always on time",right:"Never on time"},{left:"Strange",right:"Weird"},{left:"Infamous",right:"Famous"},{left:"Fun",right:"Boring"},{left:"Best chore",right:"Worst chore"},{left:"Overpopulated",right:"Endangered"},{left:"Green",right:"Blue"},{left:"Terrifying",right:"Soothing"},{left:"Unexpected",right:"Expected"},{left:"Good Website",right:"Bad Website"},{left:"Romantic Movie",right:"Unromantic Movie"}
+];
+
+const translations = {
+  "Good":"好","Bad":"坏","Great sequel":"优秀续集","Poor sequel":"糟糕续集","Rotten Tomato":"烂番茄","Fresh Tomato":"新鲜番茄","Highly addictive":"极度上瘾","Mildly addictive":"轻度上瘾","Cold":"冷","Hot":"热","Colorful":"色彩丰富","Colorless":"无色","High calorie":"高卡路里","Low calorie":"低卡路里","Feels good":"感觉好","Feels bad":"感觉差","Essential":"必要的","Inessential":"非必要的","Expensive":"昂贵","Cheap":"便宜","Overrated weapon":"被高估的武器","Underrated weapon":"被低估的武器","Hard subject":"难学科","Easy subject":"易学科","Famous":"著名","Unknown":"无名","Easy to use":"易于使用","Difficult to use":"难以使用","Strange":"奇怪","Normal":"正常","Stranger Things":"怪奇物语","Normal Things":"正常事物","Clean":"干净","Dirty":"脏","Requires skill":"需要技巧","Requires luck":"需要运气","Flavorful":"味道浓郁","Flavorless":"无味","Fascinating topic":"迷人的话题","Boring topic":"无聊的话题","Good actors":"好演员","Bad actor":"烂演员","Hipster":"潮人","Basic":"普通","Safe job":"安全的工作","Dangerous job":"危险的工作","Sci-Fi":"科幻","Fantasy":"奇幻","Formal":"正式","Casual":"休闲","Overpaid":"薪酬过高","Underpaid":"薪酬过低","Wet":"湿","Dry":"干","Overrated skill":"被高估的技能","Underrated skill":"被低估的技能","Encouraged":"被鼓励","Forbidden":"被禁止","Happy song":"欢乐歌曲","Sad song":"悲伤歌曲","Durable":"耐用","Fragile":"易碎","Dork":"书呆子","Geek":"极客","Evil":"邪恶","Best day of the year":"年度最佳日","Worst day of the year":"年度最差日","Good habit":"好习惯","Bad habit":"坏习惯","Dog person":"爱狗人士","Cat person":"爱猫人士","Openly love":"公开喜爱","Guilty pleasure":"罪恶的享受","Talented":"有才华","Untalented":"无才华","Light":"光明","Dark":"黑暗","Overrated actor":"被高估的演员","Underrated actor":"被低估的演员","Easy to find":"容易找到","Hard to find":"难以找到","Beautiful man":"美男子","Ugly man":"丑男","Easy to remember":"易记","Hard to remember":"难记","Highbrow":"高雅","Lowbrow":"低俗","Healthy":"健康","Unhealthy":"不健康","Good man":"好人","Bad man":"坏人","Historically irrelevant":"历史上无关紧要","Historically important":"历史上重要","Hairy":"多毛","Hairless":"无毛","Flexible":"灵活","Inflexible":"不灵活","Exotic pet":"异宠","Common pet":"常见宠物","Good Pet":"好宠物","Bad Pet":"坏宠物","Extrovert":"外向者","Introvert":"内向者","Movie was better":"电影更好","Book was better":"书更好","Good movie":"好电影","Bad movie":"烂电影","Beautiful":"美丽","Ugly":"丑陋","Happens suddenly":"突然发生","Happens slowly":"缓慢发生","Career":"事业","Job":"工作","Hated":"被讨厌","Loved":"被喜爱","The Dark Side of the Force":"原力黑暗面","The Light Side of the Force":"原力光明面","Good pizza topping":"好的披萨配料","Bad pizza topping":"差的披萨配料","Utopia":"乌托邦","Dystopia":"反乌托邦","Immature person":"不成熟的人","Mature person":"成熟的人","Overrated thing to own":"被高估的物品","Underrated thing to own":"被低估的物品","Nice person":"好人","Mean person":"坏人","Adventure movie":"冒险电影","Action movie":"动作电影","Sexy":"性感","Unsexy":"不性感","Wired":"兴奋","Tired":"疲惫","Abundant":"丰富","Scarce":"稀缺","Common":"普通","Ultra rare":"极其罕见","Skill-based":"技巧型","Luck-based":"运气型","Believable":"可信","Unbelievable":"难以置信","Classy":"高档","Trashy":"低俗","Permanent":"永久","Temporary":"临时","Doesn't look like a person":"不像人","Looks like a person":"像人","Tastes good":"好吃","Tastes bad":"难吃","Game":"游戏","Sport":"运动","Overrated Game":"被高估的游戏","Underrated Game":"被低估的游戏","Order of the Phoenix":"凤凰社","Death Eaters":"食死徒","Jedi":"绝地武士","Sith":"西斯","Cool":"酷","Uncool":"不酷","Greatest living person":"在世最伟大的人","Worst living person":"在世最差的人","Overrated":"被高估","Underrated":"被低估","Clean food":"干净食物","Messy food":"混乱食物","Ethical":"合乎道德","Unethical":"不道德","Good gift":"好礼物","Bad gift":"差礼物","Fashionable":"时尚","Unfashionable":"不时尚","Forgiveable":"可原谅","Unforgiveable":"不可原谅","Harmful":"有害","Harmless":"无害","Hygienic":"卫生","Unhygienic":"不卫生","Good music":"好音乐","Bad music":"烂音乐","Useful":"有用","Useless":"无用","Art":"艺术","Science":"科学","Important":"重要","Unimportant":"不重要","Hard to spell":"难拼写","Easy to spell":"易拼写","Virtue":"美德","Vice":"恶习","Overrated musician":"被高估的音乐人","Underrated musician":"被低估的音乐人","Popular activity":"流行活动","Unpopular activity":"冷门活动","Whole":"完整","Divided":"分裂","Reliable":"可靠","Unreliable":"不可靠","Hard to kill":"难以杀死","Easy to kill":"容易杀死","Stable":"稳定","Unstable":"不稳定","Pointy animal":"尖锐动物","Round animal":"圆润动物","Good TV show":"好电视剧","Bad TV show":"差电视剧","Feminine":"女性化","Masculine":"男性化","Useful body part":"有用的身体部位","Useless body part":"无用的身体部位","Classic":"经典","Fad":"短暂流行","Brilliant":"才华横溢","Stupid":"愚蠢","Strong":"强壮","Weak":"软弱","Useful invention":"有用的发明","Useless invention":"无用的发明","Conservative":"保守","Liberal":"自由","Popular":"受欢迎","Unpopular":"不受欢迎","Enemy":"敌人","Friend":"朋友","Exciting":"令人兴奋","Boring":"无聊","Smelly in a good way":"好闻的气味","Smelly in a bad way":"难闻的气味","Hero":"英雄","Villain":"反派","Can't afford to lose":"输不起","Want to lose":"想要输","Necessary habit":"必要习惯","Unnecessary habit":"不必要的习惯","Impressive Hero":"令人印象深刻的英雄","Pathetic Hero":"可怜的英雄","Overrated thing to do":"被高估的事","Underrated thing to do":"被低估的事","Useful Tech":"有用的科技","Useless Tech":"无用的科技","Useful in an emergency":"紧急时有用","Useless in an emergency":"紧急时无用","For adults":"成人向","For kids":"儿童向","Hard to do":"难以做到","Easy to do":"容易做到","Priceless":"无价","Worthless":"无价值","Nurture":"后天培养","Nature":"先天天性","Democracy":"民主","Dictatorship":"独裁","Cat name":"猫的名字","Dog name":"狗的名字","Partisan":"党派性","Non-partisan":"无党派","Infinite":"无限","Limited":"有限","Formal event":"正式活动","Casual event":"休闲活动","Good investment":"好投资","Bad investment":"差投资","Heavy topic":"沉重话题","Small talk":"闲聊","Spicy":"辛辣","Mild":"温和","Sacrilegious":"亵渎","Religious":"宗教","Not art":"非艺术","Prohibited":"被禁止","Illegal":"非法","Elitist":"精英主义","In control":"掌控中","Out of control":"失控","Loud":"嘈杂","Quiet":"安静","Public knowledge":"众所周知","Secret":"秘密","Too big":"太大","Too small":"太小","Long":"长","Short":"短","Best year in history":"历史上最好的年份","Worst year in history":"历史上最差的年份","Capitalist":"资本主义者","Socialist":"社会主义者","Well known fact":"众所周知的事实","Little known fact":"鲜为人知的事实","Mobile":"移动的","Stationary":"固定的","Global issue":"全球问题","Local issue":"地方问题","Skill":"技能","Talent":"天赋","Best era to time travel":"最适合穿越的时代","Worst era to time travel":"最不适合穿越的时代","The best":"最好的","The worst":"最差的","Large number":"大数字","Small number":"小数字","False":"假","True":"真","Avant garde":"前卫","Old fashioned":"老式","Beautiful word":"美丽的词","Ugly word":"丑陋的词","Tiny":"微小","Small":"小","Natural":"自然","Unnatural":"不自然","Phony":"虚假","Genuine":"真实","Original":"原创","Derivative":"衍生","Benefits everyone":"对所有人有益","Benefits you":"对你有益","Powerful":"强大","Powerless":"无力","Vegetable":"蔬菜","Fruit":"水果","Pseudoscience":"伪科学","Serious topic":"严肃话题","Funny topic":"有趣话题","Firm":"坚硬","Limp":"软弱","News":"新闻","Gossip":"八卦","Easy to sit on":"容易坐","Hard to sit on":"难以坐","Too much":"太多","Not enough":"不够","Vertical":"竖直","Horizontal":"水平","Scented":"有香味","Unscented":"无香味","Not huggable":"不适合拥抱","Huggable":"适合拥抱","Homogenous":"同质","Heterogeneous":"异质","Exclusive":"排他","Inclusive":"包容","Good dog breed":"好的狗品种","Bad dog breed":"差的狗品种","Commerce":"商业","Pop icon":"流行偶像","One hit wonder":"昙花一现","Good advice":"好建议","Bad advice":"差建议","Good candy":"好糖果","Bad candy":"差糖果","Radical":"激进","Traditional":"传统","Good mouthfeel":"好口感","Bad mouthfeel":"差口感","Legal":"合法","Shallow":"肤浅","Deep":"深刻","Always on time":"总是准时","Never on time":"从不准时","Weird":"怪异","Infamous":"声名狼藉","Fun":"有趣","Best chore":"最喜欢的家务","Worst chore":"最讨厌的家务","Overpopulated":"过度繁殖","Endangered":"濒危","Green":"绿色","Blue":"蓝色","Terrifying":"令人恐惧","Soothing":"令人平静","Unexpected":"出人意料","Expected":"在意料之中","Good Website":"好网站","Bad Website":"差网站","Romantic Movie":"浪漫电影","Unromantic Movie":"不浪漫电影"
+};
+
+function dedup(arr) {
+  const seen = new Set();
+  return arr.filter(c => { const k = c.left+'|'+c.right; if(seen.has(k))return false; seen.add(k); return true; });
+}
+
+const cards = dedup(cardsData);
+let history = [];
+let current = -1;
+
+function tr(t) { return translations[t] || ''; }
+
+function render() {
+  const c = cards[current];
+  document.getElementById('left-label').textContent = c.left;
+  document.getElementById('right-label').textContent = c.right;
+  document.getElementById('left-chinese').textContent = tr(c.left);
+  document.getElementById('right-chinese').textContent = tr(c.right);
+  const bb = document.getElementById('btn-back');
+  bb.disabled = history.length <= 1;
+}
+
+function rand() {
+  let r; do { r = Math.floor(Math.random() * cards.length); } while (r === current); return r;
+}
+
+function goNext() {
+  const idx = rand();
+  history.push(idx);
+  current = idx;
+  render();
+}
+
+function goBack() {
+  if (history.length <= 1) return;
+  history.pop();
+  current = history[history.length - 1];
+  render();
+}
+
+goNext();
+</script>
+</body>
+</html>
